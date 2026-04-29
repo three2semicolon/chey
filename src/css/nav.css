@@ -98,7 +98,7 @@ nav#site-nav.scrolled .nav-links a       { font-size: 0.72rem; }
   position: absolute;
   width: 90px;
   height: 90px;
-  top: 25%;
+  top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
   pointer-events: none;
@@ -114,12 +114,21 @@ nav#site-nav.scrolled .nav-links a       { font-size: 0.72rem; }
 }
 
 .nav-ring-1 {
-  animation: nav-orbit-1 5s linear infinite;
+  animation: nav-orbit-1 13s linear infinite;
 }
 
 .nav-ring-2 {
   border-color: var(--white);
-  animation: nav-orbit-2 30s linear infinite reverse;
+  animation: nav-orbit-2 6s linear infinite reverse;
+}
+
+.nav-ring-3 {
+  border-color: var(--white);
+  animation: nav-orbit-1 45s linear infinite;
+}
+
+.nav-ring-4 {
+  animation: nav-orbit-2 11s linear infinite reverse;
 }
 
 @keyframes nav-orbit-1 {
