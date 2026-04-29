@@ -1,0 +1,126 @@
+.socials-page {
+  padding-top: var(--nav-h);
+}
+ 
+.socials-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 5rem 2rem;
+}
+ 
+.socials-inner h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin: 0.75rem 0 1rem;
+}
+ 
+.socials-inner .divider { margin: 1.5rem 0 3rem; }
+ 
+/* Social link cards */
+.social-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  border: 1px solid var(--border);
+  margin-bottom: 4rem;
+}
+ 
+.social-card {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.75rem 2rem;
+  background: var(--bg2);
+  cursor: pointer;
+  transition: background 0.25s;
+  text-decoration: none;
+  color: inherit;
+  border-bottom: 1px solid var(--border);
+}
+.social-card:last-child { border-bottom: none; }
+ 
+.social-card:hover {
+  background: var(--bg3);
+}
+ 
+.social-card-icon {
+  width: 48px;
+  height: 48px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.25s;
+}
+.social-card:hover .social-card-icon { border-color: var(--purple-lt); }
+ 
+.social-card-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: var(--purple-lt);
+}
+ 
+.social-card-info {}
+.social-card-info h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin-bottom: 0.2rem;
+}
+.social-card-info p {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+.social-card-info .handle {
+  font-size: 0.68rem;
+  color: var(--accent);
+  margin-top: 0.15rem;
+}
+ 
+.social-card-arrow {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 1.2rem;
+  transition: transform 0.25s, color 0.25s;
+}
+.social-card:hover .social-card-arrow {
+  transform: translateX(4px);
+  color: var(--white);
+}
+ 
+/* Instagram embed section */
+.ig-section h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+}
+ 
+.ig-section p.ig-note {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+ 
+/* Behold / Elfsight embed drops here */
+.ig-embed-wrap {
+  min-height: 400px;
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.ig-embed-placeholder {
+  text-align: center;
+  padding: 3rem;
+}
+.ig-embed-placeholder p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  max-width: 400px;
+  line-height: 1.8;
+}
+.ig-embed-placeholder a {
+  color: var(--accent);
+  text-decoration: underline;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheyenne Simone Photography</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/nav.css">
+</head>
+
+<body>
+  <nav id="site-nav">
+    <ul class="nav-links">
+      <li><a href="src/pages/contact.html" data-page="contact">Contact</a></li>
+      <li><a href="src/pages/booking.html" data-page="booking">Booking</a></li>
+    </ul>
+
+    <a class="nav-logo" href="src/pages/home.html" data-page="home">
+      <div class="nav-logo-rings">
+        <div class="nav-ring nav-ring-1"></div>
+        <div class="nav-ring nav-ring-2"></div>
+      </div>
+      <img src="public/img/logo.png" alt="Cheyenne Simone Photography"
+          onerror="this.style.display='none'">
+      <span class="nav-logo-text">Cheyenne Simone<br>Photography</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="src/pages/socials.html" data-page="socials">Socials</a></li>
+      <li><a href="src/pages/portfolio.html" data-page="portfolio">Portfolio</a></li>
+    </ul>
+  </nav>
+
+  <main id="main-content" style="padding-top: var(--nav-h)">
+    <!-- router loads page content here -->
+  </main>
+
+  <script>
+    const nav = document.getElementById('site-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+  </script>
+  <script type="module" src="src/js/router.js"></script>
+</body>
+</html>

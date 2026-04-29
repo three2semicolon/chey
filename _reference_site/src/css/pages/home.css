@@ -1,0 +1,351 @@
+/* ══════════════════════════════
+   HOME PAGE
+══════════════════════════════ */
+
+/* ── HERO ── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: calc(100vh - var(--nav-h));
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* ── CIRCLE ANIMATION AREA ── */
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem 2rem;
+  min-height: 500px;
+}
+
+.circles-wrap {
+  position: relative;
+  width: 360px;
+  height: 360px;
+}
+
+/* solid filled circle */
+.c-solid {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 230px;
+  height: 230px;
+  background: var(--purple);
+  border-radius: 50%;
+  /* Rotates in response to scroll via JS transform */
+  will-change: transform;
+  transition: transform 0.1s linear;
+}
+
+/* outer dashed orbit ring */
+.c-orbit {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  will-change: transform;
+}
+
+/* the actual dashed circle SVG is drawn inline */
+.c-orbit svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* inner dotted ring (inside solid) */
+.c-inner-ring {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  width: 230px;
+  height: 230px;
+  border-radius: 50%;
+  will-change: transform;
+}
+.c-inner-ring svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── HERO TEXT ── */
+.hero-text {
+  padding: 4rem 3.5rem 4rem 1rem;
+  max-width: 520px;
+}
+
+.hero-text .eyebrow { margin-bottom: 1.25rem; }
+
+.hero-heading {
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  margin-bottom: 0.25rem;
+}
+
+.hero-text .divider { margin: 1.5rem 0; }
+
+.hero-body {
+  font-size: 0.82rem;
+  line-height: 1.9;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+/* ── SKILLS SECTION ── */
+.skills-section {
+  padding: 6rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  border-top: 1px solid var(--border);
+  background: var(--bg3);
+}
+
+.skills-left h2 {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  margin: 1rem 0 1.5rem;
+}
+
+.skills-left .divider { margin: 1.5rem 0 2rem; }
+
+.skill-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem 3rem;
+  margin-top: 1.5rem;
+}
+
+.skill-item {}
+
+.skill-icon {
+  width: 44px;
+  height: 44px;
+  margin-bottom: 0.75rem;
+  opacity: 0.85;
+}
+
+.skill-icon svg {
+  width: 100%;
+  height: 100%;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.skill-item h4 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  margin-bottom: 0.4rem;
+  color: var(--white);
+}
+
+.skill-item p {
+  font-size: 0.78rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── SKILLS RIGHT: photo collage ── */
+.skills-right {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 200px 200px;
+  gap: 6px;
+}
+
+.skills-photo {
+  overflow: hidden;
+  background: var(--bg2);
+  position: relative;
+}
+
+.skills-photo:first-child {
+  grid-column: 1 / 3;
+  grid-row: 1;
+}
+
+.skills-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.8);
+  transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.skills-photo:hover img {
+  transform: scale(1.04);
+  filter: brightness(1);
+}
+
+/* ── CAMERAS STRIP ── */
+.cameras-section {
+  padding: 4rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.cameras-section .eyebrow { margin-bottom: 1.5rem; }
+
+.cameras-heading {
+  font-size: 1.6rem;
+  margin-bottom: 2rem;
+}
+
+.cameras-strip {
+  display: flex;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.camera-card {
+  border: 1px solid var(--border);
+  padding: 1.25rem 1.75rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  min-width: 200px;
+  background: var(--bg2);
+  transition: border-color 0.25s, background 0.25s;
+}
+
+.camera-card:hover {
+  border-color: var(--purple-lt);
+  background: var(--bg3);
+}
+
+.camera-card svg {
+  width: 28px;
+  height: 28px;
+  stroke: var(--purple-lt);
+  fill: none;
+  stroke-width: 1.5;
+  flex-shrink: 0;
+}
+
+.camera-card span {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--white);
+}
+
+/* ── FOOTER ── */
+footer.site-footer {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 5rem 2rem 2.5rem;
+  text-align: center;
+}
+
+.footer-cta-tag {
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+
+.footer-cta-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  font-weight: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+  color: var(--white);
+}
+
+.footer-cta-heading::before,
+.footer-cta-heading::after {
+  content: '';
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: var(--muted);
+}
+
+.footer-links {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem 4rem;
+  max-width: 340px;
+  margin: 0 auto 3.5rem;
+}
+
+.footer-links a {
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.25s;
+}
+
+.footer-links a:hover { color: var(--white); }
+
+.footer-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.footer-logo-wrap img {
+  height: 46px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0.8;
+}
+
+.footer-socials {
+  display: flex;
+  justify-content: center;
+  gap: 1.25rem;
+  margin-bottom: 2.5rem;
+}
+
+.footer-socials a {
+  color: var(--muted);
+  transition: color 0.25s;
+  cursor: pointer;
+}
+
+.footer-socials a:hover { color: var(--accent); }
+
+.footer-copy {
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-top: 1rem;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .hero                     { grid-template-columns: 1fr; }
+  .hero-text                { padding: 2rem 1.5rem 3rem; max-width: 100%; }
+  .hero-visual              { min-height: 320px; }
+  .circles-wrap             { width: 260px; height: 260px; }
+  .c-solid                  { width: 170px; height: 170px; top: 20px; left: 20px; }
+  .c-inner-ring             { width: 170px; height: 170px; top: 20px; left: 20px; }
+  .skills-section           { grid-template-columns: 1fr; padding: 3rem 1.5rem; }
+  .cameras-section          { padding: 3rem 1.5rem; }
+}
+
+@media (max-width: 600px) {
+  .skill-grid               { grid-template-columns: 1fr; }
+  .skills-right             { grid-template-columns: 1fr; grid-template-rows: auto; }
+  .skills-photo:first-child { grid-column: 1; }
+}

@@ -1,0 +1,104 @@
+/* ── FILM REEL ── */
+.reel-outer {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  background: var(--purple);
+  /* purple strip is the "tape" base */
+}
+
+/* The scrolling strip (doubled for seamless loop) */
+.reel-strip {
+  display: flex;
+  width: max-content;
+  /* animation set via JS based on content width */
+}
+
+.reel-strip:hover { animation-play-state: paused; }
+
+@keyframes reel-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Each half of the doubled strip */
+.reel-half {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+/* ── PERFORATION ROWS ── */
+.reel-perfs {
+  display: flex;
+  align-items: center;
+  background: var(--purple);
+  padding: 7px 0;
+  /* We use a repeating pattern so it covers any width */
+  width: 100%;
+  min-width: 100%;
+}
+
+.reel-perfs-inner {
+  display: flex;
+  align-items: center;
+  gap: 0; /* gaps created by margin on holes */
+  /* This gets duplicated by JS to fill width */
+}
+
+.reel-hole {
+  width: 16px;
+  height: 11px;
+  border-radius: 3px;
+  background: rgba(0,0,0,0.55);
+  margin: 0 9px;
+  flex-shrink: 0;
+}
+
+/* ── FRAME ROW ── */
+.reel-frames {
+  display: flex;
+  background: #090614;
+  border-top: 2px solid var(--purple-dim);
+  border-bottom: 2px solid var(--purple-dim);
+}
+
+.reel-frame {
+  width: 150px;
+  height: 112px;
+  flex-shrink: 0;
+  overflow: hidden;
+  background: #140e22;
+  border-right: 2px solid #090614;
+  position: relative;
+  cursor: pointer;
+}
+
+.reel-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease, filter 0.4s ease;
+  filter: brightness(0.85);
+}
+
+.reel-frame:hover img {
+  transform: scale(1.06);
+  filter: brightness(1);
+}
+
+/* placeholder when no image */
+.reel-frame .reel-placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #1a1230 0%, #2d1a50 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.reel-frame .reel-placeholder svg {
+  width: 28px;
+  height: 28px;
+  opacity: 0.25;
+  fill: var(--purple-lt);
+}

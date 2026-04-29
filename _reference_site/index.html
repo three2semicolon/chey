@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cheyenne Simone Photography</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="src/css/base.css">
+  <link rel="stylesheet" href="src/css/nav.css">
+  <link rel="stylesheet" href="src/css/reel.css">
+  <link rel="stylesheet" href="src/css/pages/home.css">
+  <link rel="stylesheet" href="src/css/pages/portfolio.css">
+  <link rel="stylesheet" href="src/css/pages/other-pages.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════
+     FIXED NAV (never re-renders)
+══════════════════════════════════════════════ -->
+<nav id="site-nav">
+  <ul class="nav-links">
+    <li><a data-page="contact">Contact</a></li>
+    <li><a data-page="booking">Booking</a></li>
+  </ul>
+
+  <!-- Logo: swap src to your actual logo image -->
+  <div class="nav-logo" data-page="home">
+    <img src="public/img/test_images/logotest.png"
+         alt="Cheyenne Simone Photography"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+    <span class="logo-text" style="display:none">Cheyenne Simone<br>Photography</span>
+  </div>
+
+  <ul class="nav-links">
+    <li><a data-page="socials">Socials</a></li>
+    <li><a data-page="portfolio">Portfolio</a></li>
+  </ul>
+</nav>
+
+<!-- ══════════════════════════════════════════════
+     PAGE MOUNT POINT
+══════════════════════════════════════════════ -->
+<div id="app" style="padding-top: var(--nav-h)">
+
+  <!-- ════════════════════════════════
+       HOME
+  ════════════════════════════════ -->
+  <div class="page" id="page-home">
+
+    <!-- Hero -->
+    <section class="hero">
+      <!-- Left: animated circles -->
+      <div class="hero-visual">
+        <div class="circles-wrap">
+
+          <!-- Outer orbit ring (SVG dashed circle, rotates forward) -->
+          <div class="c-orbit">
+            <svg viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle
+                cx="180" cy="180" r="174"
+                stroke="rgba(240,234,248,0.35)"
+                stroke-width="2"
+                stroke-dasharray="8 10"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+
+          <!-- Solid purple circle (rotates opposite) -->
+          <div class="c-solid"></div>
+
+          <!-- Inner dotted ring on top of solid (rotates forward, slow) -->
+          <div class="c-inner-ring">
+            <svg viewBox="0 0 230 230" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle
+                cx="115" cy="115" r="108"
+                stroke="rgba(192,132,252,0.4)"
+                stroke-width="1.5"
+                stroke-dasharray="4 8"
+                stroke-linecap="round"
+              />
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Right: text -->
+      <div class="hero-text">
+        <p class="eyebrow">About Me</p>
+        <h1 class="hero-heading">Hey! I'm Cheyenne Simone,<br>I'm a photographer.</h1>
+        <div class="divider"></div>
+        <p class="hero-body">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.
+        </p>
+        <p class="hero-body">
+          <!-- Second paragraph — fill in later -->
+        </p>
+      </div>
+    </section>
+
+    <!-- Skills + photo collage -->
+    <section class="skills-section">
+      <div class="skills-left">
+        <p class="eyebrow">My Skillset</p>
+        <h2>I'm very talented.<br>Check what I can do!</h2>
+        <div class="divider"></div>
+        <!-- Skill cards injected by main.js -->
+        <div class="skill-grid"></div>
+      </div>
+
+      <div class="skills-right">
+        <!-- Drop in your actual skill-section photos here -->
+        <div class="skills-photo">
+          <img src="public/img/skill1.jpg" alt="Photography studio"
+               onerror="this.parentElement.style.background='var(--bg2)'">
+        </div>
+        <div class="skills-photo">
+          <img src="public/img/skill2.jpg" alt="Street photography"
+               onerror="this.parentElement.style.background='var(--purple-dim)'">
+        </div>
+        <div class="skills-photo">
+          <img src="public/img/skill3.jpg" alt="Camera gear"
+               onerror="this.parentElement.style.background='var(--bg2)'">
+        </div>
+      </div>
+    </section>
+
+    <!-- Cameras -->
+    <section class="cameras-section">
+      <p class="eyebrow">My Gear</p>
+      <h2 class="cameras-heading">Tools of the Trade</h2>
+      <!-- Camera cards injected by main.js -->
+      <div class="cameras-strip"></div>
+    </section>
+
+    <!-- Film Reel -->
+    <div class="reel-outer">
+      <div class="reel-strip" id="reel-strip"></div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <p class="footer-cta-tag">Interested in working together?</p>
+      <h2 class="footer-cta-heading">Reach out</h2>
+
+      <nav class="footer-links" aria-label="Footer navigation">
+        <a data-page="contact">Contact Me</a>
+        <a data-page="portfolio">Portfolio</a>
+        <a data-page="socials">Socials</a>
+        <a data-page="booking">Book</a>
+      </nav>
+
+      <div class="footer-logo-wrap">
+        <img src="public/img/test_images/logotest.png"
+             alt="Cheyenne Simone Photography"
+             onerror="this.style.display='none'">
+      </div>
+
+      <div class="footer-socials">
+        <!-- Instagram -->
+        <a href="https://instagram.com/yourhandle" target="_blank" rel="noopener" aria-label="Instagram">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+          </svg>
+        </a>
+      </div>
+
+      <p class="footer-copy">Cheyenne Simone Photography © 2026</p>
+    </footer>
+  </div><!-- /page-home -->
+
+
+  <!-- ════════════════════════════════
+       PORTFOLIO
+  ════════════════════════════════ -->
+  <div class="page portfolio-page" id="page-portfolio">
+
+    <div class="portfolio-header">
+      <div>
+        <p class="eyebrow">Work</p>
+        <h1>Portfolio</h1>
+      </div>
+      <div class="portfolio-filters">
+        <!-- Filter buttons injected by portfolio.js -->
+      </div>
+    </div>
+
+    <!-- Gallery injected by portfolio.js -->
+    <div class="gallery-grid">
+      <div class="gallery-loading">Loading…</div>
+    </div>
+
+    <!-- Lightbox -->
+    <div id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+      <div class="lightbox-inner">
+        <button class="lightbox-nav prev" aria-label="Previous">&#8592;</button>
+
+        <div class="lightbox-img-wrap">
+          <img class="lb-image" src="" alt="">
+        </div>
+
+        <div class="lightbox-info">
+          <p class="lb-category eyebrow"></p>
+          <h3 class="lb-title"></h3>
+          <div class="divider"></div>
+          <p class="lb-desc"></p>
+        </div>
+
+        <button class="lightbox-nav next" aria-label="Next">&#8594;</button>
+        <button class="lightbox-close" aria-label="Close lightbox">&#215;</button>
+      </div>
+    </div>
+  </div><!-- /page-portfolio -->
+
+
+  <!-- ════════════════════════════════
+       BOOKING
+  ════════════════════════════════ -->
+  <div class="page booking-page" id="page-booking">
+    <div class="booking-header">
+      <p class="eyebrow">Booking</p>
+      <h1>Book a Session</h1>
+      <p>Choose a time that works for you. All bookings are subject to confirmation.</p>
+    </div>
+
+    <div class="booking-embed">
+      <!--
+        Cal.com embed:
+        1. Go to cal.com → Settings → Embed
+        2. Choose "Inline" embed
+        3. Replace YOUR_CAL_USERNAME below with your Cal.com username/event-type
+        4. Optionally install their npm package for the JS embed approach
+      -->
+      <div class="cal-embed-wrap">
+        <iframe
+          src="https://cal.com/YOUR_CAL_USERNAME?embed=true&theme=dark"
+          title="Book a photography session"
+          allow="camera; microphone; fullscreen; display-capture"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div><!-- /page-booking -->
+
+
+  <!-- ════════════════════════════════
+       CONTACT
+  ════════════════════════════════ -->
+  <div class="page contact-page" id="page-contact">
+    <div class="contact-inner">
+      <p class="eyebrow">Contact</p>
+      <h1>Get in Touch</h1>
+      <div class="divider"></div>
+
+      <form class="contact-form" onsubmit="handleContactSubmit(event)">
+        <div class="form-field">
+          <label for="cf-name">Your Name</label>
+          <input type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
+        </div>
+
+        <div class="form-field">
+          <label for="cf-email">Email Address</label>
+          <input type="email" id="cf-email" name="email" placeholder="jane@email.com" required>
+        </div>
+
+        <div class="form-field">
+          <label for="cf-type">Session Type</label>
+          <select id="cf-type" name="type">
+            <option value="">— Select —</option>
+            <option value="portraits">Portraits</option>
+            <option value="landscapes">Landscapes</option>
+            <option value="commercial">Commercial / Corporate</option>
+            <option value="weddings">Weddings</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="cf-message">Message</label>
+          <textarea id="cf-message" name="message" placeholder="Tell me about your project…" required></textarea>
+        </div>
+
+        <button type="submit" class="btn form-submit">Send Message</button>
+      </form>
+    </div>
+  </div><!-- /page-contact -->
+
+
+  <!-- ════════════════════════════════
+       SOCIALS
+  ════════════════════════════════ -->
+  <div class="page socials-page" id="page-socials">
+    <div class="socials-inner">
+      <p class="eyebrow">Connect</p>
+      <h1>Follow Along</h1>
+      <div class="divider"></div>
+
+      <!-- Social link cards — update hrefs + handles -->
+      <div class="social-cards">
+        <a class="social-card" href="https://instagram.com/yourhandle" target="_blank" rel="noopener">
+          <div class="social-card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/></svg>
+          </div>
+          <div class="social-card-info">
+            <h4>Instagram</h4>
+            <p>Behind the scenes, finished work, and daily life</p>
+            <p class="handle">@yourhandle</p>
+          </div>
+          <span class="social-card-arrow">→</span>
+        </a>
+
+        <!-- Add more social cards here (TikTok, LinkedIn, etc.) -->
+      </div>
+
+      <!-- Instagram Feed Embed -->
+      <div class="ig-section">
+        <h2>Latest on Instagram</h2>
+        <p class="ig-note">
+          Live feed powered by
+          <a href="https://behold.so" target="_blank" rel="noopener">Behold.so</a>
+          — create a free account, get your widget ID, and replace the placeholder below.
+        </p>
+
+        <div class="ig-embed-wrap">
+          <!--
+            OPTION A — Behold.so (recommended, free tier):
+            1. Sign up at behold.so
+            2. Connect Instagram
+            3. Get your widget script tag and paste it here in place of the placeholder
+          -->
+
+          <!--
+            OPTION B — Manual placeholder until embed is ready:
+          -->
+          <div class="ig-embed-placeholder">
+            <p>
+              Instagram feed embed goes here.<br>
+              Connect via <a href="https://behold.so" target="_blank">Behold.so</a> or
+              <a href="https://elfsight.com" target="_blank">Elfsight</a> for a live grid.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div><!-- /page-socials -->
+
+</div><!-- /app -->
+
+<script>
+  // Simple contact form handler (wire up to Formspree / Netlify Forms / etc.)
+  function handleContactSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('.form-submit');
+    btn.textContent = 'Sent ✓';
+    btn.disabled = true;
+    // TODO: fetch('https://formspree.io/f/YOUR_ID', { method: 'POST', body: new FormData(e.target) })
+  }
+</script>
+
+<!-- Main app (ES module) -->
+<script type="module" src="src/js/main.js"></script>
+
+</body>
+</html>

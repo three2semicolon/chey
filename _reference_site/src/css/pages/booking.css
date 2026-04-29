@@ -1,0 +1,53 @@
+.booking-page {
+  padding-top: var(--nav-h);
+}
+ 
+.booking-header {
+  padding: 5rem 4rem 3rem;
+  border-bottom: 1px solid var(--border);
+}
+ 
+.booking-header h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  margin-top: 0.75rem;
+  margin-bottom: 1rem;
+}
+ 
+.booking-header p {
+  font-size: 0.85rem;
+  color: var(--muted);
+  max-width: 480px;
+  line-height: 1.8;
+}
+ 
+.booking-embed {
+  padding: 3rem 4rem;
+}
+ 
+/* Cal.com iframe container */
+.cal-embed-wrap {
+  width: 100%;
+  min-height: 700px;
+  border: 1px solid var(--border);
+  background: var(--bg2);
+  border-radius: 0;
+  overflow: hidden;
+}
+ 
+.cal-embed-wrap iframe {
+  width: 100%;
+  min-height: 700px;
+  border: none;
+  background: var(--bg2);
+}
+ 
+/* Cal.com inline embed (uses their script) */
+#cal-embed-container {
+  width: 100%;
+  min-height: 700px;
+}
+ 
+@media (max-width: 700px) {
+  .booking-header { padding: 3rem 1.5rem 2rem; }
+  .booking-embed  { padding: 2rem 1.5rem; }
+}
