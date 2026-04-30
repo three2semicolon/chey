@@ -1,6 +1,6 @@
 /* page router */
 
-import { buildReel } from './home.js';
+import { buildReel } from './pages/home.js';
 
 const PAGES = {
   home:      { file: 'src/pages/home.html',      css: 'src/css/pages/home.css' },
@@ -31,7 +31,6 @@ async function loadPage(key, pushState = true) {
   } catch {
     main.innerHTML = '<p style="padding:4rem;color:var(--muted)">Page not found.</p>';
   }
-  executeScripts(main);
 
   // inject css
   if (config.css && !document.querySelector(`link[href="${config.css}"]`)) {
