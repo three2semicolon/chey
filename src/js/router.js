@@ -1,9 +1,13 @@
+/* page router */
+
+import { buildReel } from './home.js';
+
 const PAGES = {
-  home:      { file: 'pages/home.html',      css: 'css/pages/home.css' },
-  portfolio: { file: 'pages/portfolio.html', css: 'css/pages/portfolio.css' },
-  booking:   { file: 'pages/booking.html',   css: 'css/pages/booking.css' },
-  contact:   { file: 'pages/contact.html',   css: 'css/pages/contact.css' },
-  socials:   { file: 'pages/socials.html',   css: 'css/pages/socials.css' },
+  home:      { file: 'src/pages/home.html',      css: 'src/css/pages/home.css' },
+  portfolio: { file: 'src/pages/portfolio.html', css: 'src/css/pages/portfolio.css' },
+  booking:   { file: 'src/pages/booking.html',   css: 'src/css/pages/booking.css' },
+  contact:   { file: 'src/pages/contact.html',   css: 'src/css/pages/contact.css' },
+  socials:   { file: 'src/pages/socials.html',   css: 'src/css/pages/socials.css' },
 };
 
 const main = document.getElementById('main-content');
@@ -19,7 +23,7 @@ async function loadPage(key, pushState = true) {
   main.classList.add('fading');
   await new Promise(r => setTimeout(r, 380));
 
-  // fetch html, inect
+  // fetch html, inject
   try {
     const res  = await fetch(config.file);
     const html = await res.text();
@@ -27,6 +31,7 @@ async function loadPage(key, pushState = true) {
   } catch {
     main.innerHTML = '<p style="padding:4rem;color:var(--muted)">Page not found.</p>';
   }
+  executeScripts(main);
 
   // inject css
   if (config.css && !document.querySelector(`link[href="${config.css}"]`)) {
@@ -67,3 +72,10 @@ window.addEventListener('popstate', e => {
 // inital/default
 const initial = location.hash.replace('#', '') || 'home';
 loadPage(initial, false);
+
+// execute scripts as needed
+document.addEventListener('pageLoaded', ({ detail }) => {
+  if (detail.page === 'home') {
+    buildReel();
+  }
+});
