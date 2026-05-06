@@ -1,3 +1,120 @@
 <div class="booking-page">
-  <p>Booking — coming soon</p>
+
+  <div class="booking-header">
+    <p class="eyebrow">Work Together</p>
+    <h1>Booking</h1>
+    <p class="booking-subhead">
+      Choose a session type and pick a time that works for you.
+      All bookings are subject to confirmation.
+    </p>
+  </div>
+
+  <div class="booking-body">
+
+    <!-- Session type selector -->
+    <div class="session-selector">
+      <p class="session-selector-label">Session Type</p>
+      <div class="session-tabs">
+
+        <button class="session-tab active" data-cal="james-whitfield-4txswa/portraits">
+          <div class="session-tab-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          </div>
+          <div class="session-tab-info">
+            <span class="session-tab-name">Portraits</span>
+            <span class="session-tab-duration">60 min</span>
+          </div>
+        </button>
+
+        <button class="session-tab" data-cal="james-whitfield-4txswa/weddings">
+          <div class="session-tab-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 21C12 21 4 13.5 4 8a8 8 0 0 1 16 0c0 5.5-8 13-8 13z"/></svg>
+          </div>
+          <div class="session-tab-info">
+            <span class="session-tab-name">Weddings</span>
+            <span class="session-tab-duration">Consultation · 30 min</span>
+          </div>
+        </button>
+
+        <button class="session-tab" data-cal="james-whitfield-4txswa/commercial">
+          <div class="session-tab-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <div class="session-tab-info">
+            <span class="session-tab-name">Commercial</span>
+            <span class="session-tab-duration">90 min</span>
+          </div>
+        </button>
+
+        <button class="session-tab" data-cal="james-whitfield-4txswa/general-inquiry">
+          <div class="session-tab-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </div>
+          <div class="session-tab-info">
+            <span class="session-tab-name">General Inquiry</span>
+            <span class="session-tab-duration">15 min</span>
+          </div>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Cal.com embed container -->
+    <div class="cal-wrap">
+
+      <div class="cal-embed active" id="cal-portraits">
+        <!-- Cal inline embed code begins -->
+          <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-portraits"></div>
+        <!-- Cal inline embed code ends -->
+      </div>
+
+      <div class="cal-embed" id="cal-weddings">
+        <!-- Cal inline embed code begins -->
+          <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-weddings"></div>
+        <!-- Cal inline embed code ends -->
+      </div>
+
+      <div class="cal-embed" id="cal-commercial">
+        <!-- Cal inline embed code begins -->
+          <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-commercial"></div>
+        <!-- Cal inline embed code ends -->
+      </div>
+
+      <div class="cal-embed" id="cal-inquiry">
+        <!-- Cal inline embed code begins -->
+          <div style="width:100%;height:100%;overflow:scroll" id="my-cal-inline-general-inquiry"></div>
+        <!-- Cal inline embed code ends -->
+      </div>
+
+    </div>
+
+    <!-- What to expect -->
+    <!-- <div class="booking-info">
+      <div class="booking-info-item">
+        <p class="booking-info-label">Response Time</p>
+        <p class="booking-info-value">Within 24 hours</p>
+      </div>
+      <div class="booking-info-item">
+        <p class="booking-info-label">Deposit</p>
+        <p class="booking-info-value">25% to secure your date</p>
+      </div>
+      <div class="booking-info-item">
+        <p class="booking-info-label">Cancellation</p>
+        <p class="booking-info-value">48 hours notice required</p>
+      </div>
+      <div class="booking-info-item">
+        <p class="booking-info-label">Questions?</p>
+        <p class="booking-info-value">
+          <a href="#" data-page="contact">Send a message</a>
+        </p>
+      </div>
+    </div> -->
+    <div class="booking-info-item">
+        <p class="booking-info-label">Questions?</p>
+        <p class="booking-info-value">
+          <a href="#" data-page="contact">Send a message</a>
+        </p>
+      </div>
+
+  </div>
 </div>

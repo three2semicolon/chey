@@ -1,13 +1,15 @@
 /* page router */
 
 import { buildReel } from './pages/home.js';
+import { setupBookings } from './pages/booking.js';
+import { setupPortfolio } from './pages/portfolio.js';
 
 const PAGES = {
   home:      { file: 'src/pages/home.html',      css: 'src/css/pages/home.css' },
   portfolio: { file: 'src/pages/portfolio.html', css: 'src/css/pages/portfolio.css' },
   booking:   { file: 'src/pages/booking.html',   css: 'src/css/pages/booking.css' },
-  contact:   { file: 'src/pages/contact.html',   css: 'src/css/pages/contact.css' },
-  socials:   { file: 'src/pages/socials.html',   css: 'src/css/pages/socials.css' },
+  contact:   { file: 'src/pages/contact.html',   css: 'src/css/pages/contact-socials.css' },
+  socials:   { file: 'src/pages/socials.html',   css: 'src/css/pages/contact-socials.css' },
 };
 
 const main = document.getElementById('main-content');
@@ -76,5 +78,15 @@ loadPage(initial, false);
 document.addEventListener('pageLoaded', ({ detail }) => {
   if (detail.page === 'home') {
     buildReel();
+  }
+  if (detail.page === 'socials') {
+    const d=document,s=d.createElement("script");s.type="module";
+    s.src="https://w.behold.so/widget.js";d.head.append(s);
+  }
+  if (detail.page === 'booking') {
+    setupBookings();
+  }
+  if (detail.page === 'portfolio') {
+    setupPortfolio();
   }
 });

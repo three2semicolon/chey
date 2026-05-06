@@ -1,3 +1,88 @@
 <div class="contact-page">
-  <p>Contact — coming soon</p>
+
+  <div class="contact-header">
+    <p class="eyebrow">Get in Touch</p>
+    <h1>Contact</h1>
+  </div>
+
+  <div class="contact-body">
+
+    <div class="contact-info">
+      <div class="contact-detail">
+        <span class="contact-label">Email</span>
+        <a href="mailto:hello@cheyennesimone.com" class="contact-value">
+          hello@cheyennesimone.com
+        </a>
+      </div>
+
+      <div class="contact-detail">
+        <span class="contact-label">Phone</span>
+        <a href="tel:+11234567890" class="contact-value">
+          +1 (123) 456-7890
+        </a>
+      </div>
+
+      <div class="contact-detail">
+        <span class="contact-label">Based in</span>
+        <span class="contact-value">Chicago, IL -  Evanston, IL</span>
+      </div>
+
+      <div class="contact-detail">
+        <span class="contact-label">Available for</span>
+        <span class="contact-value">Portraits · Weddings · Commercial · Travel</span>
+      </div>
+    </div>
+
+    <form action="https://formspree.io/f/xpqbldgz"
+          method="POST"
+          class="contact-form" id="contact-form">
+      <div class="form-row">
+        <div class="form-field">
+          <label for="cf-name">Name</label>
+          <input type="text" id="cf-name" name="name" placeholder="Jane Smith" required>
+        </div>
+        <div class="form-field">
+          <label for="cf-email">Email</label>
+          <input type="email" id="cf-email" name="email" placeholder="jane@email.com" required>
+        </div>
+      </div>
+
+      <div class="form-field">
+        <label for="cf-phone">Phone (optional)</label>
+        <input type="tel" id="cf-phone" name="phone" placeholder="+1 (123) 456-7890">
+      </div>
+
+      <div class="form-field">
+        <label for="cf-type">Session Type</label>
+        <select id="cf-type" name="type">
+          <option value="">— Select —</option>
+          <option value="portraits">Portraits</option>
+          <option value="weddings">Weddings</option>
+          <option value="commercial">Commercial</option>
+          <option value="general">General Inquiry</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message"
+          placeholder="Tell me about your project, preferred dates, location…"
+          required></textarea>
+      </div>
+
+      <div class="form-footer">
+        <button type="submit" class="submit-btn">
+          <span class="submit-label">Send Message</span>
+          <span class="submit-sending" style="display:none">Sending…</span>
+          <span class="submit-done" style="display:none">Sent ✓</span>
+        </button>
+        <p class="form-note">
+          Prefer email? Reach me directly at
+          <a href="mailto:hello@cheyennesimone.com">hello@cheyennesimone.com</a>
+        </p>
+      </div>
+    </form>
+
+  </div>
 </div>

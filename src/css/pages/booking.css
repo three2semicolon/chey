@@ -1,53 +1,226 @@
-.booking-page {
-  padding-top: var(--nav-h);
-}
- 
+/* ══════════════════════════════
+   BOOKING
+══════════════════════════════ */
+
+.booking-page {}
+
 .booking-header {
   padding: 5rem 4rem 3rem;
   border-bottom: 1px solid var(--border);
 }
- 
+
 .booking-header h1 {
   font-size: clamp(2.5rem, 5vw, 4rem);
-  margin-top: 0.75rem;
-  margin-bottom: 1rem;
+  margin: 0.75rem 0 1rem;
 }
- 
-.booking-header p {
+
+.booking-subhead {
   font-size: 0.85rem;
   color: var(--muted);
-  max-width: 480px;
   line-height: 1.8;
 }
- 
-.booking-embed {
-  padding: 3rem 4rem;
+
+.booking-body {
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 }
- 
-/* Cal.com iframe container */
-.cal-embed-wrap {
-  width: 100%;
-  min-height: 700px;
+
+/* ── SESSION TABS ── */
+.session-selector-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}
+
+.session-tabs {
+  display: flex;
+  gap: 1px;
+  background: var(--border);
   border: 1px solid var(--border);
-  background: var(--bg2);
-  border-radius: 0;
-  overflow: hidden;
 }
- 
-.cal-embed-wrap iframe {
-  width: 100%;
-  min-height: 700px;
+
+.session-tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg3);
   border: none;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.25s, color 0.25s;
+}
+
+.session-tab:hover {
   background: var(--bg2);
+  color: var(--white);
 }
- 
-/* Cal.com inline embed (uses their script) */
-#cal-embed-container {
+
+.session-tab.active {
+  background: var(--bg);
+  color: var(--white);
+  position: relative;
+}
+
+.session-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--accent);
+}
+
+.session-tab-icon {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 0.25s;
+}
+
+.session-tab.active .session-tab-icon,
+.session-tab:hover .session-tab-icon {
+  border-color: var(--purple-lt);
+}
+
+.session-tab-icon svg {
+  width: 16px;
+  height: 16px;
+  stroke: var(--purple-lt);
+  fill: none;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.session-tab-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.session-tab-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: inherit;
+  letter-spacing: 0.05em;
+}
+
+.session-tab-duration {
+  font-size: 0.65rem;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── CAL EMBED ── */
+.cal-wrap {
+  border: 1px solid var(--border);
+  background: var(--bg3);
+  min-height: 680px;
+  position: relative;
+}
+
+.cal-embed {
+  display: none;
   width: 100%;
-  min-height: 700px;
+  min-height: 680px;
 }
- 
-@media (max-width: 700px) {
+
+.cal-embed.active {
+  display: block;
+}
+
+/* Cal.com theming overrides — helps it blend in */
+.cal-embed iframe {
+  width: 100%;
+  min-height: 680px;
+  border: none;
+  background: transparent;
+}
+
+/* placeholder until real embeds are dropped in */
+.cal-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-height: 680px;
+  color: var(--muted);
+}
+
+.cal-placeholder p {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem;
+  color: var(--white);
+}
+
+.cal-placeholder span {
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* ── BOOKING INFO STRIP ── */
+.booking-info {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+
+.booking-info-item {
+  padding: 1.5rem 2rem;
+  background: var(--bg3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.booking-info-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.booking-info-value {
+  font-size: 0.85rem;
+  color: var(--white);
+  line-height: 1.5;
+}
+
+.booking-info-value a {
+  color: var(--accent);
+  text-decoration: none;
+  transition: opacity 0.25s;
+}
+
+.booking-info-value a:hover { opacity: 0.75; }
+
+/* ══════════════════════════════
+   RESPONSIVE
+══════════════════════════════ */
+
+@media (max-width: 1024px) {
+  .session-tabs { flex-wrap: wrap; }
+  .session-tab  { flex: 1 1 calc(50% - 1px); }
+  .booking-info { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 900px) {
   .booking-header { padding: 3rem 1.5rem 2rem; }
-  .booking-embed  { padding: 2rem 1.5rem; }
+  .booking-body   { padding: 2rem 1.5rem; }
+  .session-tab    { flex: 1 1 100%; }
+  .booking-info   { grid-template-columns: 1fr; }
 }
