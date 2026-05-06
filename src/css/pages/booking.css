@@ -1,6 +1,4 @@
-/* ══════════════════════════════
-   BOOKING
-══════════════════════════════ */
+/* booking */
 
 .booking-page {}
 
@@ -27,7 +25,7 @@
   gap: 3rem;
 }
 
-/* ── SESSION TABS ── */
+/* session tabs */
 .session-selector-label {
   font-size: 0.6rem;
   letter-spacing: 0.22em;
@@ -121,7 +119,7 @@
   letter-spacing: 0.08em;
 }
 
-/* ── CAL EMBED ── */
+/* cal.com embed */
 .cal-wrap {
   border: 1px solid var(--border);
   background: var(--bg3);
@@ -139,7 +137,7 @@
   display: block;
 }
 
-/* Cal.com theming overrides — helps it blend in */
+/* cal.com theming overrides*/
 .cal-embed iframe {
   width: 100%;
   min-height: 680px;
@@ -170,7 +168,7 @@
   text-transform: uppercase;
 }
 
-/* ── BOOKING INFO STRIP ── */
+/* booking info */
 .booking-info {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -208,9 +206,7 @@
 
 .booking-info-value a:hover { opacity: 0.75; }
 
-/* ══════════════════════════════
-   RESPONSIVE
-══════════════════════════════ */
+/* mobile */
 
 @media (max-width: 1024px) {
   .session-tabs { flex-wrap: wrap; }
