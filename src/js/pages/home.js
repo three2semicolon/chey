@@ -7,6 +7,8 @@ const MAX_SPEED   = BASE_SPEED * 40;
 const HOLE_W      = 34;
 
 function buildReel(images) {
+  const strip = document.getElementById('reel-strip');
+  if (!strip) return;
 
   function makeHoles(count) {
     const row = document.createElement('div');
@@ -22,7 +24,7 @@ function buildReel(images) {
   function makeFrames() {
     const row = document.createElement('div');
     row.className = 'reel-frames';
-    REEL_IMAGES.forEach(src => {
+    images.forEach(src => {
       const frame = document.createElement('div');
       frame.className = 'reel-frame';
       const img = document.createElement('img');
