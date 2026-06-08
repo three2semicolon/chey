@@ -1,6 +1,6 @@
 /* page router */
 
-import { buildReel } from './pages/home.js';
+import { initHome } from './pages/home.js';
 import { setupBookings } from './pages/booking.js';
 import { setupPortfolio } from './pages/portfolio.js';
 
@@ -77,7 +77,7 @@ loadPage(initial, false);
 // execute scripts as needed
 document.addEventListener('pageLoaded', ({ detail }) => {
   if (detail.page === 'home') {
-    buildReel();
+    initHome();
   }
   if (detail.page === 'socials') {
     const d=document,s=d.createElement("script");s.type="module";

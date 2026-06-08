@@ -121,8 +121,8 @@
 
 /* cal.com embed */
 .cal-wrap {
-  border: 1px solid var(--border);
-  background: var(--bg3);
+  /* border: 1px solid var(--border); */
+  /* background: var(--bg3); */
   min-height: 680px;
   position: relative;
 }

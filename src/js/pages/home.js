@@ -1,23 +1,12 @@
-const REEL_IMAGES = [
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-  'public/img/test_images/placeholder.png',
-];
+import { getReelImages } from '../reel.js';
 
-const BASE_SPEED  = 0.6;   // px per frame
-const FRICTION    = 0.94;
-const MAX_SPEED   =  BASE_SPEED * 40;
-const HOLE_W      = 34;    // hole + gap width
 const REEL_IMAGE_W = 300;
+const BASE_SPEED  = 0.6;
+const FRICTION    = 0.94;
+const MAX_SPEED   = BASE_SPEED * 40;
+const HOLE_W      = 34;
 
-function buildReel() {
-  const strip = document.getElementById('reel-strip');
-  if (!strip) return;
+function buildReel(images) {
 
   function makeHoles(count) {
     const row = document.createElement('div');
@@ -53,7 +42,7 @@ function buildReel() {
 
     const frames = makeFrames();
 
-    const totalFramesW = (REEL_IMAGE_W + 12) * REEL_IMAGES.length;
+    const totalFramesW = (REEL_IMAGE_W + 12) * images.length;
     const holeCount    = Math.ceil(totalFramesW / HOLE_W) + 1;
 
     half.appendChild(makeHoles(holeCount));
@@ -89,7 +78,9 @@ function initPhysics(strip) {
 
     offset += velocity;
 
-    offset = ((offset % halfW) - halfW) % halfW;
+    // smooth wrapping that avoids discontinuities
+    while (offset < -halfW) offset += halfW;
+    while (offset > 0) offset -= halfW;
 
     strip.style.transform = `translateX(${offset}px)`;
     requestAnimationFrame(tick);
@@ -104,6 +95,9 @@ function initPhysics(strip) {
     dragVel    = 0;
     velocity   = 0;
     strip.style.cursor = 'grabbing';
+
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
   }
 
   function onDragMove(x) {
@@ -114,11 +108,23 @@ function initPhysics(strip) {
 
     dragVel    = (dx / dt) * 16;
     offset    += dx;
-    offset    = ((offset % halfW) - halfW) % halfW;
+
+    // smooth wrapping that avoids discontinuities
+    while (offset < -halfW) offset += halfW;
+    while (offset > 0) offset -= halfW;
+
     lastDragX  = x;
     lastDragT  = now;
 
     strip.style.transform = `translateX(${offset}px)`;
+  }
+
+  function onMouseMove(e) {
+    onDragMove(e.clientX);
+  }
+
+  function onTouchMove(e) {
+    onDragMove(e.touches[0].clientX);
   }
 
   function onDragEnd() {
@@ -126,16 +132,17 @@ function initPhysics(strip) {
     isDragging = false;
     strip.style.cursor = 'grab';
     velocity = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, dragVel));
+
+    window.removeEventListener('mousemove', onMouseMove);
+    window.removeEventListener('touchmove', onTouchMove);
   }
 
   // mouse
   strip.addEventListener('mousedown',  e => onDragStart(e.clientX));
-  window.addEventListener('mousemove', e => onDragMove(e.clientX));
   window.addEventListener('mouseup',   onDragEnd);
 
   // touch
   strip.addEventListener('touchstart', e => onDragStart(e.touches[0].clientX), { passive: true });
-  window.addEventListener('touchmove',  e => onDragMove(e.touches[0].clientX), { passive: true });
   window.addEventListener('touchend',   onDragEnd);
 
   strip.style.cursor = 'grab';
@@ -143,3 +150,9 @@ function initPhysics(strip) {
 }
 
 export { buildReel };
+
+// Init function for page
+export async function initHome() {
+  const reelImages = await getReelImages();
+  buildReel(reelImages);
+}
