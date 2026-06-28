@@ -3,7 +3,7 @@
 ══════════════════════════════ */
 
 .play-page {
-  height: calc(100vh - var(--nav-h));
+  height: calc(90vh - 80px);
   background: var(--bg);
   top: calc(var(--nav-h) * -1);
   position: relative;
