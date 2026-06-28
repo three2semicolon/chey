@@ -31,7 +31,7 @@ async function initPlay() {
 
   // ── SCENE ──────────────────────────────────────
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x100d1a);
+  scene.background = new THREE.Color(0x180d23);
 
   camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
   camera.position.set(0, 1.2, 6.2); // closer + slightly above
@@ -51,14 +51,13 @@ async function initPlay() {
   keyLight.shadow.mapSize.set(1024, 1024);
   scene.add(keyLight);
 
-  const fillLight = new THREE.PointLight(0x8b5ec7, 0.7, 20);
+  const fillLight = new THREE.PointLight(0x8774ca, 0.7, 20)
   fillLight.position.set(-3, 3, 2);
   scene.add(fillLight);
 
   // ── ROOM — brighter walls, clear separation from floor ──
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0x241c3d, roughness: 0.85 });
-  const wallMat  = new THREE.MeshStandardMaterial({ color: 0x352a52, roughness: 0.95 });
-
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x18132a, roughness: 0.85 }); // --bg2
+  const wallMat  = new THREE.MeshStandardMaterial({ color: 0x3d2460, roughness: 0.95 }); // --purple-dim
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(ROOM_SIZE * 2, ROOM_SIZE * 2), floorMat);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
@@ -151,7 +150,7 @@ async function initPlay() {
     console.warn('Basketball model failed, using placeholder sphere:', err);
     ballMesh = new THREE.Mesh(
       new THREE.SphereGeometry(BALL_RADIUS, 32, 32),
-      new THREE.MeshStandardMaterial({ color: 0x6b3fa0, roughness: 0.6 })
+      new THREE.MeshStandardMaterial({ color: 0x6541a1, roughness: 0.6 })
     );
     ballMesh.castShadow = true;
   }
@@ -170,11 +169,21 @@ async function initPlay() {
   window.addEventListener('resize', resizeHandler);
 
   loading.classList.add('hidden');
-
+  const swipeControls = setupSwipeThrow(canvas, THREE, CANNON);
   const clock = new THREE.Clock();
   function animate() {
     const dt = Math.min(clock.getDelta(), 1 / 30);
-    world.step(1 / 60, dt, 3);
+
+    if (swipeControls.isHolding && swipeControls.hoverSpinVel) {
+      // manually spin the kinematic body while held
+      const q = new CANNON.Quaternion();
+      const spin = swipeControls.hoverSpinVel;
+      q.setFromEuler(spin.x * dt, spin.y * dt, spin.z * dt);
+      ballBody.quaternion = ballBody.quaternion.mult(q);
+    } else {
+      world.step(1 / 60, dt, 3);
+    }
+
     ballMesh.position.copy(ballBody.position);
     ballMesh.quaternion.copy(ballBody.quaternion);
     renderer.render(scene, camera);
@@ -187,36 +196,79 @@ async function initPlay() {
 function setupSwipeThrow(canvas, THREE, CANNON) {
   let startX = 0, startY = 0, startT = 0;
   let tracking = false;
+  let holding  = false;
+  let holdTimeout = null;
+  let hoverSpinVel = null;
+
+  const HOLD_DELAY_MS = 180; // time with no movement before it's considered a "hold"
 
   function onDown(e) {
     const p = getPoint(e);
     startX = p.x; startY = p.y; startT = performance.now();
     tracking = true;
+    holding  = false;
+
+    clearTimeout(holdTimeout);
+    holdTimeout = setTimeout(() => {
+      if (!tracking) return; // already released before delay hit
+      holding = true;
+      enterHoldMode(CANNON);
+    }, HOLD_DELAY_MS);
+  }
+
+  function onMove(e) {
+    if (!tracking) return;
+    const p = getPoint(e);
+    const dist = Math.hypot(p.x - startX, p.y - startY);
+    // If they move enough before the hold delay fires, cancel hold-mode entirely (treat as a swipe)
+    if (dist > 12 && !holding) {
+      clearTimeout(holdTimeout);
+    }
+  }
+
+  function enterHoldMode(CANNON) {
+    ballBody.velocity.set(0, 0, 0);
+    ballBody.angularVelocity.set(0, 0, 0);
+    ballBody.type = CANNON.Body.KINEMATIC; // freeze physics, ball won't fall
+    hoverSpinVel = {
+      x: (Math.random() - 0.5) * 4,
+      y: (Math.random() - 0.5) * 4,
+      z: (Math.random() - 0.5) * 4,
+    };
   }
 
   function onUp(e) {
     if (!tracking) return;
     tracking = false;
+    clearTimeout(holdTimeout);
 
+    if (holding) {
+      // release from hover — restore physics, let it drop naturally (no throw)
+      ballBody.type = CANNON.Body.DYNAMIC;
+      ballBody.wakeUp();
+      holding = false;
+      hoverSpinVel = null;
+      return;
+    }
+
+    // normal swipe-to-throw path
     const p = getPoint(e);
     const dx = p.x - startX;
     const dy = p.y - startY;
     const dt = Math.max(performance.now() - startT, 1);
 
-    // tiny taps
     const dist = Math.hypot(dx, dy);
     if (dist < 15) return;
 
-    // Speed of swipe in px/ms → normalized throw power
-    const speed = dist / dt; // px per ms
-    const power = Math.min(speed * 16, 14); // clamp max power
+    const speed = dist / dt;
+    const power = Math.min(speed * 16, 14);
 
     const dirX =  (dx / dist);
-    const dirY = -(dy / dist); // swipe up (negative dy) = positive y throw
+    const dirY = -(dy / dist);
 
     const vx = dirX * power * 0.8;
-    const vy = Math.max(dirY, 0.15) * power * 0.9 + 1; // always some upward arc
-    const vz = -power * 1.1; // always throws away from camera
+    const vy = dirY * power * 0.9 + 0.5;
+    const vz = -power * 1.1;
 
     ballBody.wakeUp();
     ballBody.velocity.set(vx, vy, vz);
@@ -236,9 +288,17 @@ function setupSwipeThrow(canvas, THREE, CANNON) {
     return { x: e.clientX, y: e.clientY };
   }
 
+  canvas.addEventListener('contextmenu', e => e.preventDefault());
   canvas.addEventListener('pointerdown', onDown);
+  canvas.addEventListener('pointermove', onMove);
   canvas.addEventListener('pointerup',   onUp);
   canvas.addEventListener('pointercancel', onUp);
+
+  // Expose hover spin state so the animate loop can apply it
+  return {
+    get isHolding() { return holding; },
+    get hoverSpinVel() { return hoverSpinVel; },
+  };
 }
 
 // ── RESET LOGIC ──────────────────────────────────────

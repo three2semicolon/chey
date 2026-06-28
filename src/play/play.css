@@ -22,6 +22,9 @@
   display: block;
   touch-action: none;
   cursor: grab;
+  -webkit-touch-callout: none;  /* disables iOS long-press menu */
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 #play-canvas:active {
