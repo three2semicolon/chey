@@ -71,6 +71,8 @@ nav#site-nav.scrolled {
   flex-shrink: 0;
   text-decoration: none;
   position: relative;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .nav-logo img {
@@ -279,7 +281,7 @@ nav#site-nav.scrolled .nav-links-right a { font-size: 0.72rem; }
   }
 
   .nav-logo {
-    flex: 1;
+    /* flex: 1; */
     gap: 0;
   }
 
