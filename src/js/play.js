@@ -13,6 +13,7 @@ const BALL_START    = { x: 0, y: 1.6, z: 3.5 }; // close to camera
 const IDLE_RESET_MS    = 2000;   // reset this long after ball settles
 const MAX_AIRBORNE_MS  = 5000;   // hard reset if ball never settles (prevents lock-up)
 const VELOCITY_SETTLE_THRESHOLD = 0.15;
+const DRAG_FOLLOW_SPEED = 12;    // higher = snappier follow, lower = more lag/elastic feel
 
 async function initPlay() {
   const canvas  = document.getElementById('play-canvas');
@@ -34,7 +35,7 @@ async function initPlay() {
   scene.background = new THREE.Color(0x180d23);
 
   camera = new THREE.PerspectiveCamera(55, width / height, 0.1, 100);
-  camera.position.set(0, 1.2, 6.2); // closer + slightly above
+  camera.position.set(0, 1.2, 6.2);
   camera.lookAt(0, 1.2, 0);
 
   renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -51,13 +52,14 @@ async function initPlay() {
   keyLight.shadow.mapSize.set(1024, 1024);
   scene.add(keyLight);
 
-  const fillLight = new THREE.PointLight(0x8774ca, 0.7, 20)
+  const fillLight = new THREE.PointLight(0x8774ca, 0.7, 20);
   fillLight.position.set(-3, 3, 2);
   scene.add(fillLight);
 
-  // ── ROOM — brighter walls, clear separation from floor ──
-  const floorMat = new THREE.MeshStandardMaterial({ color: 0x18132a, roughness: 0.85 }); // --bg2
-  const wallMat  = new THREE.MeshStandardMaterial({ color: 0x3d2460, roughness: 0.95 }); // --purple-dim
+  // ── ROOM ──
+  const floorMat = new THREE.MeshStandardMaterial({ color: 0x18132a, roughness: 0.85 });
+  const wallMat  = new THREE.MeshStandardMaterial({ color: 0x3d2460, roughness: 0.95 });
+
   const floor = new THREE.Mesh(new THREE.PlaneGeometry(ROOM_SIZE * 2, ROOM_SIZE * 2), floorMat);
   floor.rotation.x = -Math.PI / 2;
   floor.receiveShadow = true;
@@ -92,11 +94,11 @@ async function initPlay() {
 
   const wallMaterial = new CANNON.Material('wall');
   const wallBodies = [
-    { pos: [0, 0, -ROOM_SIZE],  rot: [0, 0, 0] },
-    { pos: [-ROOM_SIZE, 0, 0],  rot: [0, Math.PI / 2, 0] },
-    { pos: [ROOM_SIZE, 0, 0],   rot: [0, -Math.PI / 2, 0] },
-    { pos: [0, 0, ROOM_SIZE + 4], rot: [0, Math.PI, 0] }, // front, keeps ball in view
-    { pos: [0, ROOM_HEIGHT, 0],    rot: [Math.PI / 2, 0, 0] }, //ceiling
+    { pos: [0, 0, -ROOM_SIZE],     rot: [0, 0, 0] },
+    { pos: [-ROOM_SIZE, 0, 0],     rot: [0, Math.PI / 2, 0] },
+    { pos: [ROOM_SIZE, 0, 0],      rot: [0, -Math.PI / 2, 0] },
+    { pos: [0, 0, ROOM_SIZE + 4],  rot: [0, Math.PI, 0] },
+    { pos: [0, ROOM_HEIGHT, 0],    rot: [Math.PI / 2, 0, 0] },
   ];
   wallBodies.forEach(({ pos, rot }) => {
     const body = new CANNON.Body({ type: CANNON.Body.STATIC, shape: new CANNON.Plane(), material: wallMaterial });
@@ -105,10 +107,9 @@ async function initPlay() {
     world.addBody(body);
   });
 
-  // ── BALL — real basketball bounce feel ──────────
+  // ── BALL ──
   const ballMat = new CANNON.Material('ball');
 
-  // Basketball bounce: ~70-75% restitution off hard floor, less off walls
   world.addContactMaterial(new CANNON.ContactMaterial(ballMat, groundMat, {
     restitution: 0.72,
     friction: 0.5,
@@ -119,7 +120,7 @@ async function initPlay() {
   }));
 
   ballBody = new CANNON.Body({
-    mass: 0.62, // ~regulation basketball mass in kg
+    mass: 0.62,
     shape: new CANNON.Sphere(BALL_RADIUS),
     material: ballMat,
     linearDamping: 0.05,
@@ -156,7 +157,8 @@ async function initPlay() {
   }
   scene.add(ballMesh);
 
-  setupSwipeThrow(canvas, THREE, CANNON);
+  // setupSwipeThrow is called ONCE — this return value is what animate() reads from
+  const dragControls = setupSwipeThrow(canvas, THREE, CANNON);
   setupResetButton(CANNON);
   startIdleWatcher(CANNON);
 
@@ -169,16 +171,34 @@ async function initPlay() {
   window.addEventListener('resize', resizeHandler);
 
   loading.classList.add('hidden');
-  const swipeControls = setupSwipeThrow(canvas, THREE, CANNON);
+
   const clock = new THREE.Clock();
   function animate() {
     const dt = Math.min(clock.getDelta(), 1 / 30);
 
-    if (swipeControls.isHolding && swipeControls.hoverSpinVel) {
-      // manually spin the kinematic body while held
+    if (dragControls.isDragging) {
+      const current = ballBody.position;
+      const beforeX = current.x, beforeY = current.y, beforeZ = current.z;
+
+      const t = Math.min(DRAG_FOLLOW_SPEED * dt, 1);
+      const target = dragControls.dragTarget;
+      const newX = current.x + (target.x - current.x) * t;
+      const newY = current.y + (target.y - current.y) * t;
+      const newZ = current.z + (target.z - current.z) * t;
+
+      ballBody.position.set(newX, newY, newZ);
+
+      // velocity sampled from actual eased movement, not raw pointer delta
+      dragControls.velocitySample.set(
+        (newX - beforeX) / dt,
+        (newY - beforeY) / dt,
+        (newZ - beforeZ) / dt
+      );
+
+      // tumble the ball as it's dragged — spin proportional to movement speed
+      const spin = dragControls.velocitySample;
       const q = new CANNON.Quaternion();
-      const spin = swipeControls.hoverSpinVel;
-      q.setFromEuler(spin.x * dt, spin.y * dt, spin.z * dt);
+      q.setFromEuler(spin.z * dt * 0.6, spin.x * dt * 0.6, -spin.y * dt * 0.6 + spin.x * dt * 0.2);
       ballBody.quaternion = ballBody.quaternion.mult(q);
     } else {
       world.step(1 / 60, dt, 3);
@@ -192,112 +212,102 @@ async function initPlay() {
   animate();
 }
 
-// ── SWIPE-TO-THROW ──────────────────────────────────
+// ── DRAG-TO-THROW ──────────────────────────────────
 function setupSwipeThrow(canvas, THREE, CANNON) {
-  let startX = 0, startY = 0, startT = 0;
-  let tracking = false;
-  let holding  = false;
-  let holdTimeout = null;
-  let hoverSpinVel = null;
+  let isDragging = false;
+  const dragTarget     = new THREE.Vector3();
+  const velocitySample = new THREE.Vector3();
 
-  const HOLD_DELAY_MS = 180; // time with no movement before it's considered a "hold"
+  const raycaster   = new THREE.Raycaster();
+  const pointer     = new THREE.Vector2();
+  const dragPlane   = new THREE.Plane();
+  const planeNormal = new THREE.Vector3();
+  const intersection = new THREE.Vector3();
+
+  function getNDC(e, rect) {
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    pointer.set(x * 2 - 1, -(y * 2 - 1));
+  }
 
   function onDown(e) {
-    const p = getPoint(e);
-    startX = p.x; startY = p.y; startT = performance.now();
-    tracking = true;
-    holding  = false;
+    const rect = canvas.getBoundingClientRect();
+    getNDC(e, rect);
+    raycaster.setFromCamera(pointer, camera);
 
-    clearTimeout(holdTimeout);
-    holdTimeout = setTimeout(() => {
-      if (!tracking) return; // already released before delay hit
-      holding = true;
-      enterHoldMode(CANNON);
-    }, HOLD_DELAY_MS);
+    const ballPos = new THREE.Vector3().copy(ballBody.position);
+    const closest = new THREE.Vector3();
+    raycaster.ray.closestPointToPoint(ballPos, closest);
+
+    if (closest.distanceTo(ballPos) > BALL_RADIUS * 2) return;
+
+    isDragging = true;
+    ballBody.velocity.set(0, 0, 0);
+    ballBody.angularVelocity.set(0, 0, 0);
+    ballBody.type = CANNON.Body.KINEMATIC;
+
+    camera.getWorldDirection(planeNormal);
+    dragPlane.setFromNormalAndCoplanarPoint(planeNormal, ballPos);
+
+    dragTarget.copy(ballPos);
+    velocitySample.set(0, 0, 0);
+
+    canvas.setPointerCapture(e.pointerId);
   }
 
   function onMove(e) {
-    if (!tracking) return;
-    const p = getPoint(e);
-    const dist = Math.hypot(p.x - startX, p.y - startY);
-    // If they move enough before the hold delay fires, cancel hold-mode entirely (treat as a swipe)
-    if (dist > 12 && !holding) {
-      clearTimeout(holdTimeout);
-    }
-  }
+    if (!isDragging) return;
+    const rect = canvas.getBoundingClientRect();
+    getNDC(e, rect);
+    raycaster.setFromCamera(pointer, camera);
 
-  function enterHoldMode(CANNON) {
-    ballBody.velocity.set(0, 0, 0);
-    ballBody.angularVelocity.set(0, 0, 0);
-    ballBody.type = CANNON.Body.KINEMATIC; // freeze physics, ball won't fall
-    hoverSpinVel = {
-      x: (Math.random() - 0.5) * 4,
-      y: (Math.random() - 0.5) * 4,
-      z: (Math.random() - 0.5) * 4,
-    };
+    if (raycaster.ray.intersectPlane(dragPlane, intersection)) {
+      intersection.x = Math.max(-ROOM_SIZE + BALL_RADIUS, Math.min(ROOM_SIZE - BALL_RADIUS, intersection.x));
+      intersection.y = Math.max(BALL_RADIUS, Math.min(ROOM_HEIGHT - BALL_RADIUS, intersection.y));
+      intersection.z = Math.max(-ROOM_SIZE + BALL_RADIUS, Math.min(ROOM_SIZE - BALL_RADIUS, intersection.z));
+
+      dragTarget.copy(intersection);
+    }
   }
 
   function onUp(e) {
-    if (!tracking) return;
-    tracking = false;
-    clearTimeout(holdTimeout);
-
-    if (holding) {
-      // release from hover — restore physics, let it drop naturally (no throw)
-      ballBody.type = CANNON.Body.DYNAMIC;
-      ballBody.wakeUp();
-      holding = false;
-      hoverSpinVel = null;
-      return;
-    }
-
-    // normal swipe-to-throw path
-    const p = getPoint(e);
-    const dx = p.x - startX;
-    const dy = p.y - startY;
-    const dt = Math.max(performance.now() - startT, 1);
-
-    const dist = Math.hypot(dx, dy);
-    if (dist < 15) return;
-
-    const speed = dist / dt;
-    const power = Math.min(speed * 16, 14);
-
-    const dirX =  (dx / dist);
-    const dirY = -(dy / dist);
-
-    const vx = dirX * power * 0.8;
-    const vy = dirY * power * 0.9 + 0.5;
-    const vz = -power * 1.1;
-
+    if (!isDragging) return;
+    isDragging = false;
+    ballBody.type = CANNON.Body.DYNAMIC;
     ballBody.wakeUp();
-    ballBody.velocity.set(vx, vy, vz);
+
+    const speed = velocitySample.length();
+    const maxThrow = 40;
+    const power = Math.min(speed, maxThrow);
+
+    const forwardBoost = Math.max(power * 0.6, 2);
+
+    ballBody.velocity.set(
+      velocitySample.x,
+      velocitySample.y,
+      -forwardBoost
+    );
+
     ballBody.angularVelocity.set(
       (Math.random() - 0.5) * 8,
       (Math.random() - 0.5) * 8,
       (Math.random() - 0.5) * 8
     );
 
-    markThrown();
-  }
-
-  function getPoint(e) {
-    if (e.changedTouches && e.changedTouches[0]) {
-      return { x: e.changedTouches[0].clientX, y: e.changedTouches[0].clientY };
-    }
-    return { x: e.clientX, y: e.clientY };
+    if (power > 0.5) markThrown();
+    canvas.releasePointerCapture(e.pointerId);
   }
 
   canvas.addEventListener('contextmenu', e => e.preventDefault());
   canvas.addEventListener('pointerdown', onDown);
   canvas.addEventListener('pointermove', onMove);
-  canvas.addEventListener('pointerup',   onUp);
+  canvas.addEventListener('pointerup', onUp);
   canvas.addEventListener('pointercancel', onUp);
 
-  // Expose hover spin state so the animate loop can apply it
   return {
-    get isHolding() { return holding; },
-    get hoverSpinVel() { return hoverSpinVel; },
+    get isDragging() { return isDragging; },
+    dragTarget,
+    velocitySample,
   };
 }
 
@@ -322,8 +332,6 @@ function setupResetButton(CANNON) {
   btn.addEventListener('click', () => resetBall(CANNON));
 }
 
-// Watches for: (a) ball has settled and been idle a bit, or
-// (b) ball has been in motion too long without settling — force reset either way.
 function startIdleWatcher(CANNON) {
   let settledSince = null;
 
@@ -341,7 +349,6 @@ function startIdleWatcher(CANNON) {
       }
     } else {
       settledSince = null;
-      // Safety net: force-reset if it's been bouncing/rolling forever
       if (now - thrownAt > MAX_AIRBORNE_MS) {
         resetBall(CANNON);
       }
