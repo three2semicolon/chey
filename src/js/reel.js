@@ -1,4 +1,4 @@
-// Reel image fetching from Sanity (or fallback to local)
+/* reel image fetching from Sanity (or fallback to local)*/
 
 const SANITY = {
   projectId: '76kejomt',

@@ -3,6 +3,7 @@
 import { initHome } from './pages/home.js';
 import { setupBookings } from './pages/booking.js';
 import { setupPortfolio } from './pages/portfolio.js';
+import { initPlay, teardownPlay } from './play.js';
 
 const PAGES = {
   home:      { file: 'src/pages/home.html',      css: 'src/css/pages/home.css' },
@@ -10,6 +11,7 @@ const PAGES = {
   booking:   { file: 'src/pages/booking.html',   css: 'src/css/pages/booking.css' },
   contact:   { file: 'src/pages/contact.html',   css: 'src/css/pages/contact-socials.css' },
   socials:   { file: 'src/pages/socials.html',   css: 'src/css/pages/contact-socials.css' },
+  play: { file: 'src/play/play.html', css: 'src/play/play.css' },
 };
 
 const main = document.getElementById('main-content');
@@ -88,5 +90,10 @@ document.addEventListener('pageLoaded', ({ detail }) => {
   }
   if (detail.page === 'portfolio') {
     setupPortfolio();
+  }
+  if (detail.page === 'play') {
+    initPlay();
+  } else {
+    teardownPlay();
   }
 });
