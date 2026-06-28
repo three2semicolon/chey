@@ -27,6 +27,7 @@ export const photo = defineType({
           { title: 'Portraits',   value: 'portraits' },
           { title: 'Weddings',    value: 'weddings' },
           { title: 'Commercial',  value: 'commercial' },
+          { title: 'Events',   value: 'events' },
           { title: 'Landscapes',  value: 'landscapes' },
         ],
         layout: 'radio',
