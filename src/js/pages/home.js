@@ -1,7 +1,7 @@
 import { getReelImages } from '../reel.js';
 
 const REEL_IMAGE_W = 300;
-const BASE_SPEED  = 0.6;
+const BASE_SPEED  = 0.8;
 const FRICTION    = 0.94;
 const MAX_SPEED   = BASE_SPEED * 40;
 const HOLE_W      = 34;
