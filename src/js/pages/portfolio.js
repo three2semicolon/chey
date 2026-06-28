@@ -94,9 +94,20 @@ function buildFilters(images) {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       activeFilter = cat;
+
       filtered = cat === 'all'
-        ? allImages
-        : allImages.filter(i => i.category === cat);
+        ? images
+        : images.filter(i => i.category === cat);
+
+      // hide featured strip unless "all" is selected
+      const featuredStrip = document.getElementById('featured-strip');
+      if (featuredStrip) {
+        const newDisplay = cat === 'all' ? 'block' : 'none';
+        console.log('setting featured display to:', newDisplay, 'for cat:', cat);
+        featuredStrip.style.display = newDisplay;
+        console.log('actual display right after setting:', featuredStrip.style.display);
+      }
+
       renderGallery(filtered);
     });
     wrap.appendChild(btn);
